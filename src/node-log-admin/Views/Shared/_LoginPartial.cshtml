@@ -2,16 +2,48 @@
 
 @if (User.IsSignedIn())
 {
-    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.GetUserName()!</a>
+    <!-- User Account: style can be found in dropdown.less -->
+    <li class="dropdown user user-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="~/lib/admin-lte/dist/img/default-50x50.gif" class="user-image" alt="User Image">
+            <span class="hidden-xs">@User.GetUserName()</span>
+        </a>
+        <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+                <img src="~/lib/admin-lte/dist/img/default-50x50.gif" class="img-circle" alt="User Image">
+                <p>
+                    @User.GetUserName()
+                </p>
             </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+            <!-- Menu Body -->
+            <li class="user-body">
+                <div class="row">
+                    <div class="col-xs-4 text-center">
+                        <a href="#">Followers</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <a href="#">Sales</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <a href="#">Friends</a>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+                <div class="pull-left">
+                    <a asp-controller="Manage" asp-action="Index" title="Manage">Profile</a>
+                </div>
+                <div class="pull-right">
+                    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+                        <button type="submit" class="btn btn-link navbar-btn navbar-link">Sign out</button>
+                    </form>
+                </div>
             </li>
         </ul>
-    </form>
+    </li>
 }
 else
 {
