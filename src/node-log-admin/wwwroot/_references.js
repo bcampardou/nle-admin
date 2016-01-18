@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
+/// <reference path="js/logs.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/admin-lte/dist/js/app.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />

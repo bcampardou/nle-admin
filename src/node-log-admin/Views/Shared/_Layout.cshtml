@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -475,7 +477,10 @@
     <script src="~/lib/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="~/lib/admin-lte/plugins/chartjs/Chart.min.js"></script>
-    <script src="~/js/site.js"></script>
+    @if (User.IsSignedIn())
+    {
+        <script src="~/js/site.js"></script>
+    }
     <!-- AdminLTE for demo purposes -->
     @*<script src="~/lib/admin-lte/dist/js/demo.js"></script>*@
 
