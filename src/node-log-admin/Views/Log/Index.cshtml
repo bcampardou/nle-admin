@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Application's logs";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/admin-lte/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="~/lib/admin-lte/plugins/datatables/dataTables.bootstrap.css">
+}
+
+@section scripts{
+    <script src="~/lib/admin-lte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/admin-lte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/logs.js"></script>
+}
+<input type="hidden" name="hostname" id="hostname" value="@ViewBag.hostname" />
+
+<div id="dtContainer"></div>
+

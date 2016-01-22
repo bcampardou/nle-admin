@@ -2,20 +2,19 @@
     ViewData["Title"] = "Home";
 }
 
+@section scripts{
+    <script src="~/lib/lipsum-js/lipsum.js"></script>
+    <script src="~/js/fake-app.js"></script>
+}
+
 <div class="row">
-    <div class="col-md-3">
-        <h2>Generate an error</h2>
-        <a class="btn btn-danger" href="#">Go !</a>
+    <div class="col-md-4 text-center">
+        <a id="errorGenerator" class="btn btn-danger" href="#">Generate an error</a>
     </div>
-    <div class="col-md-3">
-        <h2>Generate a warning</h2>
-        <a class="btn btn-warning" href="#">Go !</a>
+    <div class="col-md-4 text-center">
+        <a id="warnGenerator" class="btn btn-warning" href="#">Generate a warning</a>
     </div>
-    <div class="col-md-3">
-        <h2>Generate an info</h2>
-        <a class="btn btn-primary" href="#">Go !</a>
-    </div>
-    <div class="col-md-3">
-        <h2>Hmmm...</h2>
+    <div class="col-md-4 text-center">
+        <a id="noticeGenerator" class="btn btn-primary" href="#">Generate an info</a>
     </div>
 </div>

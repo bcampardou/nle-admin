@@ -1,0 +1,29 @@
+﻿@import "../lib/admin-lte/build/less/AdminLTE.less";
+
+.table {
+    > tbody {
+        > tr.error {
+            > td {
+                background-color: lighten(@red, 15%);
+            }
+        }
+
+        > tr.error:hover {
+            > td {
+                background-color: @red;
+            }
+        }
+
+        > tr.warning {
+            > td {
+                background-color: lighten(@yellow, 15%);
+            }
+        }
+
+        > tr.warning:hover {
+            > td {
+                background-color: @yellow;
+            }
+        }
+    }
+}

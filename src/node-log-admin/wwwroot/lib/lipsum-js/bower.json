@@ -1,0 +1,32 @@
+{
+  "name": "lipsum-js",
+  "version": "0.1.1",
+  "authors": [
+    "andrienko <ilia.andrienko@gmail.com>"
+  ],
+  "description": "A really tiny function for generating Lorem-ipsum placeholder text.",
+  "main": "lipsum.js",
+  "keywords": [
+    "lorem",
+    "ipsum",
+    "dolor",
+    "lipsum",
+    "placeholder"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andrienko/lipsum-js.git"
+  },
+  "license": "MIT",
+  "homepage": "http://andrienko.org",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "package.json",
+    "gulpfile.js",
+    ".gitignore",
+    ".git",
+    "*.html"
+  ]
+}

@@ -11,8 +11,10 @@ namespace node_log_admin.Controllers
     public class LogController : Controller
     {
         // GET: /<controller>/
-        public IActionResult Index()
+        [Route("log")]
+        public IActionResult Index(string hostname)
         {
+            ViewBag.hostname = hostname;
             return View();
         }
     }

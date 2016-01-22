@@ -7,7 +7,7 @@ $(document).ready(function () {
         dataType: 'jsonp'
     }).done(function (data) {
         for (var i in data) {
-            $('#hostList').append($('<li><a title="Log" href="/Log"><i class="fa fa-circle-o"></i> ' + data[i] + '</a></li>'));
+            $('#hostList').append($('<li><a title="Log" href="/Log?hostname=' + data[i] + '"><i class="fa fa-circle-o"></i> ' + data[i] + '</a></li>'));
         }
     });
 });
