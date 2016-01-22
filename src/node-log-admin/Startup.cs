@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using node_log_admin.Models;
 using node_log_admin.Services;
+using Microsoft.AspNet.Authentication.Cookies;
+using Microsoft.AspNet.Http;
 
 namespace node_log_admin
 {
@@ -54,6 +56,11 @@ namespace node_log_admin
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<CookieAuthenticationOptions>(options =>
+            {
+                options.LoginPath = new PathString("/Account/Login");
+            });
+
             services.AddMvc();
 
             // Add application services.
@@ -71,7 +78,7 @@ namespace node_log_admin
 
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
