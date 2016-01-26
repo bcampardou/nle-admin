@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
+using node_log_admin.Tools;
 
 namespace node_log_admin.Controllers
 {
@@ -12,11 +13,13 @@ namespace node_log_admin.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.MenuItem = MenuItems.Home;
             return View();
         }
 
         public IActionResult About()
         {
+            ViewBag.MenuItem = MenuItems.Home;
             ViewData["Message"] = "Your application description page.";
 
             return View();
@@ -24,6 +27,7 @@ namespace node_log_admin.Controllers
 
         public IActionResult Contact()
         {
+            ViewBag.MenuItem = MenuItems.Home;
             ViewData["Message"] = "Your contact page.";
 
             return View();
@@ -31,6 +35,7 @@ namespace node_log_admin.Controllers
 
         public IActionResult Error()
         {
+            ViewBag.MenuItem = MenuItems.Home;
             return View();
         }
     }

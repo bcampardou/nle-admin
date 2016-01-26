@@ -5585,14 +5585,14 @@ fieldset[disabled] .btn-yahoo.active {
   }
 }
 .table > tbody > tr.error > td {
-  background-color: #e8867a;
+  background-color: #fbe9e7;
 }
 .table > tbody > tr.error:hover > td {
-  background-color: #dd4b39;
+  background-color: #f3c2bc;
 }
 .table > tbody > tr.warning > td {
-  background-color: #f7ba5b;
+  background-color: #fdedd4;
 }
 .table > tbody > tr.warning:hover > td {
-  background-color: #f39c12;
+  background-color: #fad9a4;
 }

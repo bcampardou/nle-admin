@@ -19,7 +19,7 @@
                     $trh.append('<th>' + prop + '</th>');
                 }
                 var value = (prop === 'date' ? moment(log[prop]).format('YYYY/MM/DD HH:MM:SS') : log[prop]);
-                $tr.append('<td>' + log[prop] + '</td>');
+                $tr.append('<td>' + value + '</td>');
             }
             if (hasHeader == false) {
                 var $thead = $('<thead></thead>').append($trh);

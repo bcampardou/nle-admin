@@ -1,8 +1,9 @@
 ﻿@using System.Security.Claims
+@using node_log_admin.Tools
 
 @if(User.IsSignedIn()){
     <!-- Left side column. contains the logo and sidebar -->
-    <aside class="main-sidebar">
+    <aside class="main-sidebar" id="sidebar_left">
         <!-- sidebar: style can be found in sidebar.less -->
         <section style="height: auto;" class="sidebar">
             <!-- Sidebar user panel -->
@@ -30,10 +31,10 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
-                <li class="active"><a href="/"><i class="fa fa-dashboard"></i> <span>Accueil</span></a></li>
+                <li class="active"><a href="/" data-menu-link="@MenuItems.Home"><i class="fa fa-dashboard"></i> <span>Accueil</span></a></li>
                 
                 <li class="treeview">
-                    <a href="#">
+                    <a href="#"  data-menu-link="@MenuItems.Log">
                         <i class="fa fa-book"></i> <span>Applications</span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu" id="hostList">
