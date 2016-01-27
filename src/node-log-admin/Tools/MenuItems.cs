@@ -9,5 +9,6 @@ namespace node_log_admin.Tools
     {
         public const string Home = "Home";
         public const string Log = "Log";
+        public const string Documentation = "Documentation";
     }
 }
