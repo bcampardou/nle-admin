@@ -9,7 +9,7 @@ var appConfig = {
      * @method: the override method 'PUT', 'DELETE' ...
      */
     getUrl: function (route, method) {
-        var url = protocol + '://' + domain + ':' + port + route + '?key=' + key;
+        var url = appConfig.protocol + '://' + appConfig.domain + ':' + appConfig.port + route + '?key=' + appConfig.key;
         if (typeof (method) !== 'undefined')
             url += '&_method=' + method;
 
@@ -21,7 +21,7 @@ $(document).ready(function () {
         url: location.origin + "/Manage/GetApiKey",
         method: 'GET'
     }).done(function (data) {
-        appConfig = data;
+        appConfig = $.extend({}, appConfig, data);
         $(document).trigger('keyloaded');
     });
     
