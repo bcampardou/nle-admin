@@ -1,21 +1,23 @@
 ﻿$(document).ready(function () {
-    $(document).on('click', '#errorGenerator', function (e) {
-        e.preventDefault();
-        var data = fakeMessage('error');
+    $(document).on('keyloaded', function () {
+        $(document).on('click', '#errorGenerator', function (e) {
+            e.preventDefault();
+            var data = fakeMessage('error');
 
-        putLog(data);        
-    });
-    $(document).on('click', '#warnGenerator', function (e) {
-        e.preventDefault();
-        var data = fakeMessage('warning');
+            putLog(data);
+        });
+        $(document).on('click', '#warnGenerator', function (e) {
+            e.preventDefault();
+            var data = fakeMessage('warning');
 
-        putLog(data);
-    });
-    $(document).on('click', '#noticeGenerator', function (e) {
-        e.preventDefault();
-        var data = fakeMessage('notice');
+            putLog(data);
+        });
+        $(document).on('click', '#noticeGenerator', function (e) {
+            e.preventDefault();
+            var data = fakeMessage('notice');
 
-        putLog(data);
+            putLog(data);
+        });
     });
 });
 
@@ -38,7 +40,7 @@ var fakeMessage = function (level) {
 };
 
 var putLog = function (sentData) {
-    var url = 'http://localhost:3200/log/nodelog-admin?_method=put&key=ce411675-1824-4a02-98fc-c68ce6705ea7';
+    var url = appConfig.getUrl('/log/nla', 'PUT');
 
     $.ajax({
         url: url,

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
 using node_log_admin.Tools;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNet.Mvc.Filters;
 
 namespace node_log_admin.Controllers
 {

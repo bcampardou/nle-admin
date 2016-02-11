@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using node_log_admin.Models;
 using node_log_admin.Services;
 using node_log_admin.ViewModels.Manage;
+using Microsoft.Extensions.Configuration;
 
 namespace node_log_admin.Controllers
 {
@@ -21,19 +22,22 @@ namespace node_log_admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IConfiguration _config;
 
         public ManageController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _config = configuration;
         }
 
         //
@@ -343,5 +347,25 @@ namespace node_log_admin.Controllers
         }
 
         #endregion
+
+        [HttpGet]
+        public async Task<JsonResult> GetApiKey()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user != null)
+            {
+                var config = new
+                {
+                    protocol = _config["NLEngine:Protocol"],
+                    domain = _config["NLEngine:Domain"],
+                    port = _config["NLEngine:Port"],
+                    key = _config["NLEngine:Key"]
+                };
+                return new JsonResult(config);
+            }
+
+            Response.StatusCode = 401;
+            return null;
+        }
     }
 }
