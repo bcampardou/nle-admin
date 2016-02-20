@@ -17,6 +17,16 @@ var appConfig = {
     }
 };
 $(document).ready(function () {
+    $(document).on('keyup', '#appFilter', function (e) {
+        $('.logLink').each(function () {
+            if ($(this).data('hostname').indexOf($('#appFilter').val()) < 0)
+                $(this).parent('li').hide();
+            else
+                $(this).parent('li').show();
+
+        });
+    });
+
     $.ajax({
         url: location.origin + "/Manage/GetApiKey",
         method: 'GET'
@@ -32,8 +42,9 @@ $(document).ready(function () {
             dataType: 'jsonp'
         }).done(function (data) {
             for (var i in data) {
-                $('#hostList').append($('<li><a data-menu-link="' + data[i] + '" title="Log" href="/Log?hostname=' + data[i] + '"><i class="fa fa-circle-o"></i> ' + data[i] + '</a></li>'));
+                $('#hostList').prepend($('<li><a class="logLink" data-menu-link="' + data[i] + '" data-hostname="' + data[i] + '" title="Log" href="/Log?hostname=' + data[i] + '"><i class="fa fa-circle-o"></i> ' + data[i] + '</a></li>'));
             }
+            $('#hostList').prepend($('<div class="sidebar-form"><input id="appFilter" class="form-control" placeholder="Filter" type="text"></div>'));
         }).always(function (jqXHR, textStatus) {
             $('#sidebar_left').find('li.active').removeClass('active');
             var $actualMenuLink = $('#sidebar_left').find('a[data-menu-link="' + $('#mainContainer').data('menu-link') + '"]');
