@@ -7,6 +7,7 @@
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.4",
     "admin-lte": "~2.3.2",
-    "lipsum-js": "*"
+    "lipsum-js": "*",
+    "sweetalert": "~1.1.3"
   }
 }

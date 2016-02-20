@@ -49,9 +49,21 @@ var putLog = function (sentData) {
         dataType: 'json',
         method: 'POST'
     }).success(function (data) {
-        window.alert("success : " + data);
+
+        swal({
+            title: "Success !",
+            text: data,
+            timer: 2000,
+            type: 'success',
+            showConfirmButton: true
+        });
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        window.alert("error : " + errorThrown);
+        swal({
+            title: "Error :",
+            text: errorThrown,
+            type: 'error',
+            showConfirmButton: true
+        });
     });
 };
 

@@ -64,9 +64,18 @@ $(document).ready(function () {
                     method: 'POST',
                     dataType: 'json'
                 }).done(function (data) {
-                    window.alert(data);
+                    swal({
+                        title: "Success !",
+                        text: 'The API key is : ' + data,
+                        type: 'success',
+                        showConfirmButton: true
+                    });
                 }).fail(function (jqXHR, textStatus, errorThrown) {
-                    window.alert("error : " + errorThrown);
+                    swal({
+                        title: "Error :",
+                        type: 'error',
+                        text: errorThrown
+                    });
                 });
             }
         });
