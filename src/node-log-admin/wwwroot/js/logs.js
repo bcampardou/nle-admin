@@ -46,6 +46,14 @@ $(document).ready(function () {
             $('#dtContainer table:eq(0)').dataTable({
                 "order": [[createdAtIndex, "desc"]]
             });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            $('#dtContainer > .overlay').remove();
+            swal({
+                title: "Error :",
+                text: errorThrown,
+                type: 'error',
+                showConfirmButton: true
+            });
         });
 
         $(document).on('click', '#getKeyBtn', function (e) {
