@@ -13,5 +13,17 @@
 }
 <input type="hidden" name="hostname" id="hostname" value="@ViewBag.hostname" />
 
-<div id="dtContainer"></div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="pull-right">
+            <button id="getKeyBtn" class="btn btn-default" >Show API key</button>
+        </div>
+    </div>
+</div>
+
+<div id="dtContainer">
+    <div class="overlay">
+        <i class="fa fa-refresh fa-spin"></i>
+    </div>
+</div>
 

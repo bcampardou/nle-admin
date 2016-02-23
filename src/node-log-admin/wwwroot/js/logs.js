@@ -1,6 +1,9 @@
-﻿$(document).ready(function () {
+﻿var hostname = '';
+
+$(document).ready(function () {
+    hostname = $('#hostname').val();
+
     $(document).on('keyloaded', function () {
-        var hostname = $('#hostname').val();
         $.ajax({
             url: appConfig.getUrl('/log/' + hostname),
             dataType: 'jsonp',
@@ -38,9 +41,25 @@
                 $tbody.append($tr);
             }
             $table.append($tbody);
+            $('#dtContainer > .overlay').remove();
             $('#dtContainer').append($table);
             $('#dtContainer table:eq(0)').dataTable({
                 "order": [[createdAtIndex, "desc"]]
+            });
+        });
+
+        $(document).on('click', '#getKeyBtn', function (e) {
+            $.ajax({
+                url: appConfig.getUrl('/admin/keys/' + hostname),
+                dataType: 'jsonp',
+                method: 'GET'
+            }).done(function (data) {
+                swal({
+                    title: hostname + " API Key",
+                    text: data,
+                    type: 'success',
+                    showConfirmButton: true
+                });
             });
         });
     });
