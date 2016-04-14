@@ -70,6 +70,21 @@ $(document).ready(function () {
                 });
             });
         });
+
+        $(document).on('click', '#deleteLogsBtn', function (e) {
+            $.ajax({
+                url: appConfig.getUrl('/admin/' + hostname + '/log', 'DELETE'),
+                dataType: 'json',
+                method: 'POST'
+            }).done(function (data) {
+                swal({
+                    title: hostname,
+                    text: data,
+                    type: 'success',
+                    showConfirmButton: true
+                });
+            });
+        });
     });
 });
 

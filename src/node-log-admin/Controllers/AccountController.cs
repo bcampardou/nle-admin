@@ -45,6 +45,7 @@ namespace node_log_admin.Controllers
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["RegistrationPermitted"] = !_userManager.Users.Any();
             return View();
         }
 
@@ -92,6 +93,9 @@ namespace node_log_admin.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            if (_userManager.Users.Any())
+                return RedirectToAction("Index", "Home", null);
+
             return View();
         }
 

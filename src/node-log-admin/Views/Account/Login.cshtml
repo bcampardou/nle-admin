@@ -29,12 +29,14 @@
             </div>
             <div class="form-group">
                 <div class="col-xs-8">
-                    <div class="checkbox icheck" style="margin-left:10px;">
+                    <div class="checkbox icheck pull-left" style="" >
                         <div class="icheckbox_square-blue">
+
                             <input asp-for="RememberMe" class="icheckbox_square-blue" />
-                            <label asp-for="RememberMe"></label>
+
                         </div>
                     </div>
+                    <label asp-for="RememberMe" class="pull-left" style="min-height:27px; margin-left:10px; padding-top:7px;"></label>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
@@ -46,7 +48,10 @@
 
         <!-- /.social-auth-links -->
         <a asp-action="ForgotPassword">Forgot your password?</a><br>
-        <a asp-action="Register">Register as a new user?</a>
+        @if (bool.TrueString.Equals(ViewData["RegistrationPermitted"].ToString()))
+        {
+            <a asp-action="Register">Register as a new user?</a>
+        }
     </div>
     <!-- /.login-box-body -->
 </div>
