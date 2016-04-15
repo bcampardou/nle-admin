@@ -52,7 +52,7 @@ var putLog = function (sentData) {
 
         swal({
             title: "Success !",
-            text: data,
+            //text: data,
             timer: 2000,
             type: 'success',
             showConfirmButton: true

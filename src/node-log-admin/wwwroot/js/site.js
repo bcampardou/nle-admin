@@ -55,7 +55,13 @@ $(document).ready(function () {
             // open a modal to get the application name then send a request to node log engine to register this app.
             // Finally show the api key
             $('#addAppModal').modal({ backdrop: 'static' });
+            
         });
+
+        $(document).on('click', '#submitAppName', function (e) {
+            $('#addAppModal').modal('hide');
+            $('#appNameField').val('');
+        })
 
         $(document).on('click', '#submitAppName', function () {
             if ($('#appNameField').val() !== '') {
