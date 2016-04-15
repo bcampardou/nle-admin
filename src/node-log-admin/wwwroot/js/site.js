@@ -58,11 +58,6 @@ $(document).ready(function () {
             
         });
 
-        $(document).on('click', '#submitAppName', function (e) {
-            $('#addAppModal').modal('hide');
-            $('#appNameField').val('');
-        })
-
         $(document).on('click', '#submitAppName', function () {
             if ($('#appNameField').val() !== '') {
                 $.ajax({
@@ -83,6 +78,9 @@ $(document).ready(function () {
                         text: errorThrown
                     });
                 });
+
+                $('#addAppModal').modal('hide');
+                $('#appNameField').val('');
             }
         });
     });

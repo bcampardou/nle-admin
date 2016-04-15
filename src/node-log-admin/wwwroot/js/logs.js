@@ -24,16 +24,18 @@ $(document).ready(function () {
         $(document).on('click', '#deleteLogsBtn', function (e) {
             $.ajax({
                 url: appConfig.getUrl('/admin/' + hostname + '/log', 'DELETE'),
+                method: 'POST',
+                crossDomain: true,                
                 dataType: 'json',
-                method: 'POST'
-            }).done(function (data) {
+            }).success(function (data) {
                 swal({
                     title: hostname,
-                    text: data,
+                    text: 'The registered logs have been removed',
                     type: 'success',
                     showConfirmButton: true
                 });
-
+                $('#dtContainer > .overlay').show();
+                InitDatatable();
             });
         });
     });
@@ -84,9 +86,9 @@ function InitDatatable() {
         } else {
             $('#dtContainer').append('<span><strong> No logs received... </strong></span>');
         }
-        $('#dtContainer > .overlay').remove();
+        $('#dtContainer > .overlay').hide();
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $('#dtContainer > .overlay').remove();
+        $('#dtContainer > .overlay').hide();
         swal({
             title: "Error :",
             text: errorThrown,
