@@ -1,7 +1,6 @@
 ﻿(function () {
-    'use strict';
     // Write your Javascript code.
-    var appConfig = {
+    appConfig = {
         domain: '',
         protocol: '',
         key: '',

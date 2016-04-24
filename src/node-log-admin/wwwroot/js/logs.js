@@ -65,13 +65,17 @@
                             $trh.append('<th>' + prop + '</th>');
                         }
                         if (prop === 'createdAt' || prop === 'date') {
-                            createdAtIndex = nbCol;
+                            if (i == 0) {
+                                createdAtIndex = nbCol;
+                            }
                             $tr.append('<td>' + moment(log[prop]).format('YYYY/MM/DD HH:MM:SS') + '</td>');
                         }
                         else {
                             $tr.append('<td>' + log[prop] + '</td>');
                         }
-                        nbCol++;
+                        if (i == 0) {
+                            nbCol++;
+                        }
                     }
                     if (hasHeader == false) {
                         var $thead = $('<thead></thead>').append($trh);
