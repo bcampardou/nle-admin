@@ -2,25 +2,25 @@
 
 .table {
     > tbody {
-        > tr.error {
+        > tr.error, tr.fatal {
             > td {
                 background-color: lighten(@red, 40%);
             }
         }
 
-        > tr.error:hover {
+        > tr.error:hover, tr.fatal:hover {
             > td {
                 background-color: lighten(@red, 30%);
             }
         }
 
-        > tr.warning {
+        > tr.warning, tr.warn {
             > td {
                 background-color: lighten(@yellow, 40%);
             }
         }
 
-        > tr.warning:hover {
+        > tr.warning:hover, tr.warn:hover {
             > td {
                 background-color: lighten(@yellow, 30%);
             }
