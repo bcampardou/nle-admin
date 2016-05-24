@@ -1,7 +1,6 @@
 ﻿@using System.Security.Claims
 @using node_log_admin.Tools
 
-@if(User.IsSignedIn()){
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar" id="sidebar_left">
         <!-- sidebar: style can be found in sidebar.less -->
@@ -12,7 +11,7 @@
                     <img src="~/lib/admin-lte/dist/img/default-50x50.gif" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>@User.GetUserName()</p>
+                    <p>@User.Identity.Name</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -52,4 +51,3 @@
         </section>
         <!-- /.sidebar -->
     </aside>
-}

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using node_log_admin.Tools;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNet.Mvc.Filters;
 
 namespace node_log_admin.Controllers
 {
