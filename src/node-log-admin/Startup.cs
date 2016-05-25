@@ -47,6 +47,7 @@ namespace node_log_admin
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddSingleton<IConfiguration>(sp => { return Configuration; });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
