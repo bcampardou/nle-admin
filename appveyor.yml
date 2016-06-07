@@ -1,3 +1,16 @@
 version: 1.0.{build}
+before_build:
+- cmd: >-
+    npm install -g gulp bower
+
+    dotnet restore src\node-log-admin\project.json
 build:
+  project: node-log-admin.sln
+  parallel: true
   verbosity: minimal
+after_build:
+- cmd: dotnet publish src\node-log-admin -o artifacts\publish -c Debug
+artifacts:
+- path: artifacts\publish
+  name: node-log-admin
+  type: WebDeployPackage
