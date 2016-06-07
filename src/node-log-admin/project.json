@@ -1,4 +1,5 @@
 {
+  "title": "NLE-Admin",
   "userSecretsId": "aspnet5-node_log_admin-eb7f485b-d883-46fc-8559-4b3d44ea6e56",
   "version": "1.0.0-*",
   "dependencies": {
@@ -100,6 +101,7 @@
   },
 
   "scripts": {
+    "prebuild": [ "npm install", "bower install", "typings install", "gulp setProduction", "gulp build" ],
     "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
