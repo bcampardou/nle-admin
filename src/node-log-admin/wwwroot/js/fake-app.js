@@ -2,7 +2,7 @@
     'use strict';
 
     $(document).ready(function () {
-        $(document).on('keyloaded', function () {
+        $(document).on('nlea.keyloaded', function () {
             $(document).on('click', '#errorGenerator', function (e) {
                 e.preventDefault();
                 var data = fakeMessage('error');
@@ -48,7 +48,6 @@
         $.ajax({
             url: url,
             data: sentData,
-            crossDomain: true,
             dataType: 'json',
             method: 'POST'
         }).success(function (data) {
@@ -69,5 +68,5 @@
             });
         });
     };
-})()
+})();
 

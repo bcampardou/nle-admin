@@ -1,6 +1,6 @@
 ﻿(function () {
-    // Write your Javascript code.
-    appConfig = {
+    'use strict';
+    window.appConfig = {
         domain: '',
         protocol: '',
         key: '',
@@ -10,14 +10,15 @@
          * @method: the override method 'PUT', 'DELETE' ...
          */
         getUrl: function (route, method) {
-            var url = appConfig.protocol + '://' + appConfig.domain + ':' + appConfig.port + route + '?key=' + appConfig.key;
-            if (typeof (method) !== 'undefined')
+            var url = window.appConfig.protocol + '://' + window.appConfig.domain + ':' + window.appConfig.port + route + '?key=' + window.appConfig.key;
+            if (typeof method !== 'undefined')
                 url += '&_method=' + method;
 
             return url;
         }
     };
     $(document).ready(function () {
+
         $(document).on('keyup', '#appFilter', function (e) {
             $('.logLink').each(function () {
                 if ($(this).data('hostname').indexOf($('#appFilter').val()) < 0)
@@ -32,13 +33,13 @@
             url: location.origin + "/Manage/GetApiKey",
             method: 'GET'
         }).done(function (data) {
-            appConfig = $.extend({}, appConfig, data);
-            $(document).trigger('keyloaded');
+            window.appConfig = $.extend({}, window.appConfig, data);
+            $(document).trigger('nlea.keyloaded');
         });
 
-        $(document).on('keyloaded', function (e) {
+        $(document).on('nlea.keyloaded', function (e) {
             $.ajax({
-                url: appConfig.getUrl('/admin/hosts'),
+                url: window.appConfig.getUrl('/admin/hosts'),
                 method: 'GET',
                 dataType: 'jsonp'
             }).done(function (data) {
@@ -62,7 +63,7 @@
             $(document).on('click', '#submitAppName', function () {
                 if ($('#appNameField').val() !== '') {
                     $.ajax({
-                        url: appConfig.getUrl('/admin/register/' + $('#appNameField').val(), 'PUT'),
+                        url: window.appConfig.getUrl('/admin/register/' + $('#appNameField').val(), 'PUT'),
                         method: 'POST',
                         dataType: 'json'
                     }).done(function (data) {
@@ -86,4 +87,4 @@
             });
         });
     });
-})()
+})();
