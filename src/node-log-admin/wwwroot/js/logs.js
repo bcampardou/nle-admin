@@ -20,7 +20,7 @@
                 dataType: 'json',
                 data: configuration
             }).done(function (data) {
-                window.alert('done : ' + data);
+                InitDatatable();
             });
         });
 
@@ -157,6 +157,11 @@
     }
 
     function InitDatatable() {
+
+        $('#dtContainer > .overlay').show();
+        $('#dtContainer > table').html('');
+        $('#dtContainer > span').remove();
+
         $.ajax({
             url: window.appConfig.getUrl('/log/' + myHostname),
             dataType: 'json',
