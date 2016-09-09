@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  node-log-admin:
+    image: node-log-admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "50759:50759"

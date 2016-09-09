@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  node-log-admin:
+    image: node-log-admin:debug
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    ports:
+      - "50759:50759"
+    environment:
+      - REMOTE_DEBUGGING

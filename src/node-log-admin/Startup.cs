@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using node_log_admin.Repositories;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace node_log_admin
 {
@@ -23,7 +24,7 @@ namespace node_log_admin
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-            
+
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
@@ -41,7 +42,7 @@ namespace node_log_admin
         {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseInMemoryDatabase(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -51,11 +52,17 @@ namespace node_log_admin
 
             services.AddMvc();
             services.AddSingleton<IConfiguration>(sp => { return Configuration; });
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.All;
+            });
 
             // Add application services.
             services.AddScoped<ILogConfigurationRepository, LogConfigurationRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,9 +94,9 @@ namespace node_log_admin
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            
 
-            
+
+
         }
     }
 }
