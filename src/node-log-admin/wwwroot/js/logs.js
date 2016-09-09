@@ -7,10 +7,25 @@
     $(document).ready(function () {
         myHostname = $('#hostname').val();
 
-        $(document).on('nlea.keyloaded', function () {
-            InitConfiguration();
+        $('#configForm').on('submit', function (e) {
+            e.preventDefault();
 
-            InitDatatable();
+            var configuration = JSON.stringify(getConfigurationFormData());
+            localStorage.setItem('logConfig_' + myHostname, configuration);
+
+            $.ajax({
+                url: '/api/Configuration/' + myHostname,
+                method: 'post',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: configuration
+            }).done(function (data) {
+                window.alert('done : ' + data);
+            });
+        });
+
+        $(document).on('nlea.keyloaded', function () {
+            InitConfiguration({ callback: InitDatatable });
 
             $(document).on('click', '#getKeyBtn', function (e) {
                 $.ajax({
@@ -43,38 +58,102 @@
                     InitDatatable();
                 });
             });
+
+        });
+
+        $(document).on('change', '.filter', function (e) {
+            var filter = $(this).val(),
+                column = $(this).attr('id');
+
+            $('#dtContainer table:eq(0)').DataTable().column('.' + column).eq(0).search(filter).draw();
         });
     });
 
-    function InitConfiguration() {
+    function InitConfiguration(params) {
         $.ajax({
-            url: window.appConfig.getUrl('/log/' + myHostname + '/structure'),
-            dataType: 'json',
-            method: 'GET'
+            url: '/api/Configuration/' + myHostname,
+            method: 'GET',
+            dataType: 'json'
         }).done(function (data) {
-            if (localStorage.getItem('logConfig_' + myHostname) === undefined) {
-                localStorage.setItem('logConfig_' + myHostname, JSON.stringify(data.structure));
-            }
-            var $container = $('#configContainer');
+            localStorage.setItem('logConfig_' + myHostname, data != undefined ? JSON.stringify(data) : undefined);
 
-            var logConfig = localStorage.getItem('logConfig_' + myHostname);
+            $.ajax({
+                url: window.appConfig.getUrl('/log/' + myHostname + '/structure'),
+                dataType: 'json',
+                method: 'GET'
+            }).done(function (data) {
+                if (localStorage.getItem('logConfig_' + myHostname) === 'undefined') {
+                    var columns = new Array();
+                    for (var i in data.structure) {
+                        var col = {};
+                        col.name = i;
+                        col.filterType = 'None';
+                        col.isHidden = false;
+                        columns.push(col);
+                    }
+                    localStorage.setItem('logConfig_' + myHostname, JSON.stringify(columns));
+                }
 
-            for (var property in logConfig) {
-                if(logConfig[property].isHidden === undefined) {
-                    logConfig[property].isHidden  = false;
+                var $container = $('#configContainer'),
+                    logConfig = JSON.parse(localStorage.getItem('logConfig_' + myHostname));
+
+                for (var i in logConfig) {
+
+                    var noFilterSelected = logConfig[i].filterType == 0,
+                        filterTextSelected = logConfig[i].filterType == 1,
+                        filterSelectSelected = logConfig[i].filterType == 2;
+
+                    $container.append($('<div class="col-sm-12 col-md-4 columnConfig"><input type="hidden" name="name" value="' + logConfig[i].name + '" /><label for="filterType_' + i + '"><strong>' + logConfig[i].name.toUpperCase() + '</strong> filter type : </label><select class="form-control" name="filterType" id="filterType_' + i + '"><option value="0"  ' + (noFilterSelected === true ? 'selected' : '') + '>None</option><option value="1" ' + (filterTextSelected === true ? 'selected' : '') + '>Free text</option><option value="2" ' + (filterSelectSelected === true ? 'selected' : '') + '>Select</option></select><label for="isHidden_' + i + '"><input name="isHidden" type="checkbox" ' + (logConfig[i].isHidden ? 'checked' : '') + ' /> hide</label></div>'));
                 }
-                if (logConfig[property].showFilter === undefined) {
-                    logConfig[property].showFilter = false;
-                    logConfig[property].filterType = '';
+
+                if (typeof params.callback === 'function') {
+                    params.callback.apply();
                 }
-                var noFilterSelected = logConfig[property].showFilter === false;
-                var filterTextSelected = logConfig[property].showFilter === true && logConfig[property].filterType === 'text';
-                var filterSelectSelected = logConfig[property].showFilter === true && logConfig[property].filterType === 'select';
-                $container.append($('<div class="col-sm-12 col-md-4"><strong>' + property + '</strong><label for="filterType_' + property + '">Filter type : </label><select id="filterType_' + property + '"><option value="false"  ' + noFilterSelected === true ? 'selected' : '' + '>None</option><option value="true" data-type="text" ' + filterTextSelected === true ? 'selected' : '' + '>Free text</option><option value="true" data-type="select" ' + filterSelectSelected === true ? 'selected' : '' + '>Select</option></select><label for="isHidden_' + property + '">Hide : </label><input type="checkbox" checked="' + logConfig[property].isHidden + '"/></div>'));
-            }
+            });
         });
 
+    }
 
+    function LoadDatatableFilters() {
+        var logConfig = JSON.parse(localStorage.getItem('logConfig_' + myHostname)),
+            $filtersContainer = $('#filtersContainer');
+
+        var htmlFilters = '';
+
+        var templateStart = function (prop) { return '<div class="col-sm-4 col-md-2"><label for="' + prop + '">' + prop.toUpperCase() + '</label>'; },
+            templateSelect = function (prop) { return '<select class="form-control filter" id="' + prop + '">' + GetOptionsForColumn(prop) + '</select>'; },
+            templateInputText = function (prop) { return '<input type="text" class="form-control filter" id="' + prop + '" />'; },
+            templateEnd = '</div>';
+
+        for (var i in logConfig) {
+            if (logConfig[i].isHidden == true || logConfig[i].filterType == 0) {
+                continue;
+            }
+
+            if (logConfig[i].filterType == 1) {
+                htmlFilters += templateStart(logConfig[i].name) + templateInputText(logConfig[i].name) + templateEnd
+            } else if (logConfig[i].filterType == 2) {
+                htmlFilters += templateStart(logConfig[i].name) + templateSelect(logConfig[i].name) + templateEnd
+            }
+        }
+
+        $filtersContainer.html(htmlFilters);
+    }
+
+    function GetOptionsForColumn(column) {
+        var values = new Array();
+        var datas = $('#dtContainer table:eq(0)').DataTable().columns('.' + column).eq(0).data();
+        var htmlOptions = '<option value="">Aucun</option>';
+
+
+        for (var i = 0; i < datas.length; i++) {
+            if (values.indexOf(datas[i][column]) < 0) {
+                values.push(datas[i][column]);
+                htmlOptions += '<option value="' + datas[i][column] + '">' + datas[i][column] + '</option>';
+            }
+        }
+
+        return htmlOptions;
     }
 
     function InitDatatable() {
@@ -84,49 +163,46 @@
             method: 'GET'
         }).done(function (data) {
             if (data.length > 0) {
-                var hasHeader = false;
-                var $table = $('<table class="table table-bordered table-hover dataTable"></table>');
-                var $tbody = $('<tbody></tbody>');
-                var $trh = $('<tr></tr>');
+                var columnsDefinitions = [];
                 var nbCol = 0;
-                var createdAtIndex = 0;
+                var createdAtIndex = -1;
+                var datas = []
+
                 for (var i in data) {
                     var log = data[i]._source;
-
-                    var $tr = $('<tr></tr>').addClass(log['level']);
-                    for (var prop in log) {
-                        if (hasHeader === false) {
-                            $trh.append('<th>' + prop + '</th>');
-                        }
-                        if (prop === 'createdAt' || prop === 'date') {
-                            if (i === 0) {
-                                createdAtIndex = nbCol;
-                            }
-                            $tr.append('<td>' + moment(log[prop]).format('YYYY/MM/DD HH:MM:SS') + '</td>');
-                        }
-                        else {
-                            $tr.append('<td>' + log[prop] + '</td>');
-                        }
-                        if (i === 0) {
-                            nbCol++;
-                        }
-                    }
-                    if (hasHeader === false) {
-                        var $thead = $('<thead></thead>').append($trh);
-                        $table.append($thead);
-                        hasHeader = true;
-                    }
-                    $tbody.append($tr);
+                    datas.push(log);
                 }
-                $table.append($tbody);
-                $('#dtContainer').html($table);
+
+                for (var prop in datas[0]) {
+                    var config = getColumnConfigurationByName(prop);
+                    var colDef = {
+                        "title": prop.toUpperCase(),
+                        "data": prop,
+                        "visible": config !== null ? !config.isHidden : true,
+                        "searchable": config !== null ? !config.isHidden : true,
+                        "className": prop
+                    };
+                    if (prop === 'createdAt' || prop.indexOf('date') >= 0) {
+                        if (createdAtIndex === -1) {
+                            createdAtIndex = nbCol;
+                        }
+                        colDef.render = function (data, type, row, meta) {
+                            return moment(data).format('YYYY/MM/DD, hh:mm:ss');
+                        };
+                    }
+                    nbCol++;
+                    columnsDefinitions.push(colDef);
+                }
                 $('#dtContainer table:eq(0)').dataTable({
-                    "order": [[createdAtIndex, "desc"]]
+                    "order": [[createdAtIndex, "desc"]],
+                    "columns": columnsDefinitions,
+                    "data": datas
                 });
             } else {
                 $('#dtContainer').append('<span><strong> No logs received... </strong></span>');
             }
             $('#dtContainer > .overlay').hide();
+            LoadDatatableFilters();
         }).fail(function (jqXHR, textStatus, errorThrown) {
             $('#dtContainer > .overlay').hide();
             swal({
@@ -135,7 +211,31 @@
                 type: 'error',
                 showConfirmButton: true
             });
+            $('#dtContainer').append('<span><strong> No logs received... </strong></span>');
         });
+    }
+
+    function getConfigurationFormData() {
+        var data = new Array();
+        $('#configContainer .columnConfig').each(function () {
+            var obj = {};
+            obj.name = $('input[name=name]:eq(0)', this).val();
+            obj.filterType = $('select[name=filterType]:eq(0)', this).val();
+            obj.isHidden = $('input[name=isHidden]:eq(0)', this).is(':checked');
+            data.push(obj);
+        });
+
+        return data;
+    }
+
+    function getColumnConfigurationByName(name) {
+        var logConfig = JSON.parse(localStorage.getItem('logConfig_' + myHostname));
+        for (var i in logConfig) {
+            if (logConfig[i] !== undefined && logConfig[i].name == name) {
+                return logConfig[i];
+            }
+        }
+        return null;
     }
 })();
 

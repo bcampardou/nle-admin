@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using node_log_admin.Repositories;
 
 namespace node_log_admin
 {
@@ -22,7 +23,7 @@ namespace node_log_admin
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
+            
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
@@ -46,10 +47,13 @@ namespace node_log_admin
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddRouting();
+
             services.AddMvc();
             services.AddSingleton<IConfiguration>(sp => { return Configuration; });
 
             // Add application services.
+            services.AddScoped<ILogConfigurationRepository, LogConfigurationRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
@@ -82,6 +86,10 @@ namespace node_log_admin
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
+
+            
         }
     }
 }

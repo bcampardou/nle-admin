@@ -54,6 +54,7 @@ namespace node_log_admin.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["RegistrationPermitted"] = !_userManager.Users.Any();
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout

@@ -17,6 +17,23 @@
             return url;
         }
     };
+
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
     $(document).ready(function () {
 
         $(document).on('keyup', '#appFilter', function (e) {
@@ -44,7 +61,7 @@
                 dataType: 'jsonp'
             }).done(function (data) {
                 for (var i in data) {
-                    $('#hostList').prepend($('<li><a class="logLink" data-menu-link="' + data[i] + '" data-hostname="' + data[i] + '" title="Log" href="/Log?hostname=' + data[i] + '"><i class="fa fa-circle-o"></i> ' + data[i] + '</a></li>'));
+                    $('#hostList').prepend($('<li><a class="logLink" data-menu-link="' + data[i] + '" data-hostname="' + data[i] + '" title="Log" href="/log/' + data[i] + '"><i class="fa fa-circle-o"></i> ' + data[i] + '</a></li>'));
                 }
                 $('#hostList').prepend($('<div class="sidebar-form"><input id="appFilter" class="form-control" placeholder="Filter" type="text"></div>'));
             }).always(function (jqXHR, textStatus) {

@@ -359,12 +359,18 @@ namespace node_log_admin.Controllers
                     port = _config["NLEngine:Port"],
                     key = _config["NLEngine:Key"]
                 };
-                return new JsonResult(config);
+                return Json(config);
             }
 
             Response.StatusCode = 401;
-            return null;
+            return Json(new
+            {
+                protocol = "",
+                domain = "",
+                port = "",
+                key = ""
+            });
         }
-        
+
     }
 }
