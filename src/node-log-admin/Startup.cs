@@ -52,10 +52,6 @@ namespace node_log_admin
 
             services.AddMvc();
             services.AddSingleton<IConfiguration>(sp => { return Configuration; });
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.All;
-            });
 
             // Add application services.
             services.AddScoped<ILogConfigurationRepository, LogConfigurationRepository>();
