@@ -12,7 +12,11 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "NLE_URL": "192.168.99.100",
+        "NLE_PORT": "3000",
+        "NLE_PROTOCOL": "http",
+        "NLE_KEY": "4e9370f2-aded-4e73-a74e-a9a167f1e7d2"
       }
     }
   }
