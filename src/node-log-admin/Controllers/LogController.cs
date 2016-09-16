@@ -13,7 +13,7 @@ namespace node_log_admin.Controllers
     {
 
         // GET: /<controller>/
-        [Route("{hostname:alpha}")]
+        [Route("{hostname:host}")]
         public IActionResult Index(string hostname)
         {
             ViewBag.MenuItem = string.IsNullOrWhiteSpace(hostname) ? MenuItems.Log : hostname;
@@ -22,7 +22,7 @@ namespace node_log_admin.Controllers
         }
 
         [HttpPost]
-        [Route("SaveLogConfiguration/{hostname:alpha}")]
+        [Route("SaveLogConfiguration/{hostname:host}")]
         public object SaveLogConfiguration(string hostname, NameValueCollection config)
         {
             return null;

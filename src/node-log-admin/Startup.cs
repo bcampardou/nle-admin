@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using node_log_admin.Repositories;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Routing;
+using node_log_admin.Tools;
 
 namespace node_log_admin
 {
@@ -51,6 +53,8 @@ namespace node_log_admin
             services.AddRouting();
 
             services.AddMvc();
+            services.Configure<RouteOptions>(options =>
+                options.ConstraintMap.Add("host", typeof(HostRouteConstraint)));
             services.AddSingleton<IConfiguration>(sp => { return Configuration; });
 
             // Add application services.
