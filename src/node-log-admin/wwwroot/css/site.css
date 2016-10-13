@@ -32,3 +32,12 @@ textarea {
         z-index: 10 !important;
     }
 }
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.noborder {
+    border: 0 !important;
+}

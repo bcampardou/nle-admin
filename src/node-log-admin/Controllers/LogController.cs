@@ -20,12 +20,5 @@ namespace node_log_admin.Controllers
             ViewBag.hostname = hostname;
             return View();
         }
-
-        [HttpPost]
-        [Route("SaveLogConfiguration/{hostname:host}")]
-        public object SaveLogConfiguration(string hostname, NameValueCollection config)
-        {
-            return null;
-        }
     }
 }
