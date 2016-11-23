@@ -31,7 +31,7 @@
         DeleteApplication: function (hostname) {
             $.ajax({
                 url: window.appConfig.getUrl('/admin/' + hostname, 'DELETE'),
-                method: 'post',
+                method: 'POST',
                 dataType: 'json'
             }).done(function (data) {
                 swal({
@@ -98,7 +98,7 @@
                 $.ajax({
                     url: window.appConfig.getUrl('/admin/register/' + $('#appNameField').val(), 'PUT'),
                     method: 'POST',
-                    dataType: 'json'
+                    dataType: 'jsonp'
                 }).done(function (data) {
                     swal({
                         title: "Success !",

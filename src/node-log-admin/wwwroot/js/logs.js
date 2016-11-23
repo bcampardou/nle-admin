@@ -49,7 +49,7 @@
 
                 $.ajax({
                     url: window.appConfig.getUrl('/log/' + logManager.applicationName + '/structure'),
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     method: 'GET'
                 }).done(function (data) {
                     if (localStorage.getItem('logConfig_' + logManager.applicationName) === 'undefined') {
@@ -114,7 +114,7 @@
 
             $.ajax({
                 url: window.appConfig.getUrl('/log/' + logManager.applicationName),
-                dataType: 'json',
+                dataType: 'jsonp',
                 method: 'GET'
             }).done(function (data) {
                 if (data.length > 0) {
@@ -180,7 +180,7 @@
         getApiKey: function (e) {
             $.ajax({
                 url: window.appConfig.getUrl('/admin/keys/' + logManager.applicationName),
-                dataType: 'json',
+                dataType: 'jsonp',
                 method: 'GET'
             }).done(function (data) {
                 swal({

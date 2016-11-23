@@ -93,10 +93,6 @@ namespace node_log_admin
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-
-
-
         }
     }
 }
