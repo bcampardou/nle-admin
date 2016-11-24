@@ -3,13 +3,12 @@
 <!-- User Account: style can be found in dropdown.less -->
 <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="~/lib/admin-lte/dist/img/default-50x50.gif" class="user-image" alt="User Image">
         <span class="hidden-xs">@User.Identity.Name</span>
     </a>
     <ul class="dropdown-menu">
         <!-- User image -->
         <li class="user-header">
-            <img src="~/lib/admin-lte/dist/img/default-50x50.gif" class="img-circle" alt="User Image">
+            <img src="~/lib/admin-lte/dist/img/avatar04.png" class="img-circle" alt="User Image">
             <p>
                 @User.Identity.Name
             </p>
@@ -17,28 +16,23 @@
         <!-- Menu Body -->
         <li class="user-body">
             <div class="row">
-                <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                </div>
-                <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                <div class="col-xs-12 text-center">
                 </div>
             </div>
             <!-- /.row -->
         </li>
         <!-- Menu Footer-->
         <li class="user-footer">
-            <span class="pull-left">
-                <a asp-controller="Manage" asp-action="Index" title="Manage">Profile</a>
-            </span>
-            <span class="pull-right">
-                <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
-                    <button type="submit" class="btn btn-link navbar-btn navbar-link">Sign out</button>
-                </form>
-            </span>
+            <div class="row">
+                <div class="col-xs-6 text-center">
+                    <a asp-controller="Manage" asp-action="Index" title="Manage" class="btn btn-link navbar-btn navbar-link">Profile</a>
+                </div>
+                <div class="col-xs-6 text-center">
+                    <form asp-controller="Account" asp-action="LogOff" method="post" class="form-horizontal" id="logoutForm">
+                        <button type="submit" class="btn btn-link navbar-btn navbar-link">Sign out</button>
+                    </form>
+                </div>
+            </div>
         </li>
     </ul>
 </li>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using node_log_admin.Models;
 using node_log_admin.Services;
 using node_log_admin.ViewModels.Manage;
@@ -354,10 +355,10 @@ namespace node_log_admin.Controllers
             {
                 var config = new
                 {
-                    protocol = _config["NLEngine:Protocol"],
-                    domain = _config["NLEngine:Domain"],
-                    port = _config["NLEngine:Port"],
-                    key = _config["NLEngine:Key"]
+                    protocol = _config.GetValue<string>("NLE_PROTOCOL"),
+                    domain = _config.GetValue<string>("NLE_URL"),
+                    port = _config.GetValue<string>("NLE_PORT"),
+                    key = _config.GetValue<string>("NLE_KEY")
                 };
                 return Json(config);
             }

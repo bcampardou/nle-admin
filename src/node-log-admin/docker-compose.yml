@@ -1,0 +1,46 @@
+version: "2"
+      
+networks:
+  back:
+    driver: bridge
+    external: false
+
+services:
+  elasticsearch:
+    image: elasticsearch:latest
+    networks:
+      - back
+    expose:
+      - "9200"
+      - "9300"
+  redis:
+    image: redis:latest
+    networks:
+      - back
+    expose:
+      - "6379"
+    command: redis-server --appendonly yes
+
+  nle:
+    image: beranger/nle:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - back
+      - default
+    depends_on:
+      - redis
+      - elasticsearch
+
+  nle-admin:
+    image: nle-admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:50759"
+    networks:
+      - default
+    depends_on:
+      - nle
+

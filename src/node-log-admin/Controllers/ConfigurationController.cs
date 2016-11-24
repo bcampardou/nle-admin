@@ -33,7 +33,7 @@ namespace node_log_admin.Controllers
         [HttpGet("{hostname}")]
         public string Get([FromRoute]string hostname)
         {
-            return _RepoConfigurations.Get(hostname.Trim()).Configuration;
+            return _RepoConfigurations.Get(hostname.Trim())?.Configuration;
         }
 
         // POST api/values
