@@ -5584,19 +5584,19 @@ fieldset[disabled] .btn-yahoo.active {
     white-space: normal !important;
   }
 }
-.table > tbody > tr.error > td,
-.table > tbody tr.fatal > td {
+div.ag-row.error > div.ag-cell,
+div.ag-row.fatal > div.ag-cell {
   background-color: #fbe9e7;
 }
-.table > tbody > tr.error:hover > td,
-.table > tbody tr.fatal:hover > td {
+div.ag-row.error:hover > div.ag-cell,
+div.ag-row.fatal:hover > div.ag-cell {
   background-color: #f3c2bc;
 }
-.table > tbody > tr.warning > td,
-.table > tbody tr.warn > td {
+div.ag-row.warning > div.ag-cell,
+div.ag-row.warn > div.ag-cell {
   background-color: #fdedd4;
 }
-.table > tbody > tr.warning:hover > td,
-.table > tbody tr.warn:hover > td {
+div.warning:hover > div.ag-cell,
+div.warn:hover > div.ag-cell {
   background-color: #fad9a4;
 }

@@ -8,7 +8,6 @@
             $('#configContainer .columnConfig').each(function () {
                 var obj = {};
                 obj.name = $('input[name=name]:eq(0)', this).val();
-                obj.filterType = $('select[name=filterType]:eq(0)', this).val();
                 obj.isHidden = $('input[name=isHidden]:eq(0)', this).is(':checked');
                 data.push(obj);
             });
@@ -23,21 +22,6 @@
                 }
             }
             return null;
-        },
-        getOptionsForColumn: function (column) {
-            var values = new Array();
-            var datas = $('#dtContainer table:eq(0)').DataTable().columns('.' + column).eq(0).data();
-            var htmlOptions = ['<option value="">Aucun</option>'];
-
-
-            for (var i = 0; i < datas.length; i++) {
-                if (values.indexOf(datas[i][column]) < 0) {
-                    values.push(datas[i][column]);
-                    htmlOptions.push('<option value="' + datas[i][column] + '">' + datas[i][column] + '</option>');
-                }
-            }
-
-            return htmlOptions.join('');
         },
         initConfiguration: function () {
             $.ajax({
@@ -57,7 +41,7 @@
                         for (var i in data.structure) {
                             var col = {};
                             col.name = i;
-                            col.filterType = 'None';
+                            //col.filterType = 'None';
                             col.isHidden = false;
                             columns.push(col);
                         }
@@ -68,46 +52,16 @@
                         logConfig = JSON.parse(localStorage.getItem('logConfig_' + logManager.applicationName));
 
                     for (var i in logConfig) {
-
-                        var noFilterSelected = logConfig[i].filterType == 0,
-                            filterTextSelected = logConfig[i].filterType == 1,
-                            filterSelectSelected = logConfig[i].filterType == 2;
-
-                        $container.append($('<div class="col-sm-12 col-md-4 columnConfig"><input type="hidden" name="name" value="' + logConfig[i].name + '" /><label for="filterType_' + i + '"><strong>' + logConfig[i].name.toUpperCase() + '</strong> filter type : </label><select class="form-control" name="filterType" id="filterType_' + i + '"><option value="0"  ' + (noFilterSelected === true ? 'selected' : '') + '>None</option><option value="1" ' + (filterTextSelected === true ? 'selected' : '') + '>Free text</option><option value="2" ' + (filterSelectSelected === true ? 'selected' : '') + '>Select</option></select><label for="isHidden_' + i + '"><input name="isHidden" type="checkbox" ' + (logConfig[i].isHidden ? 'checked' : '') + ' /> hide</label></div>'));
+                        $container.append($('<div class="col-sm-12 col-md-6 columnConfig"><div class="text-info"><strong>' + logConfig[i].name.toUpperCase() + ' :</strong></div><input type="hidden" name="name" value="' + logConfig[i].name + '" /><label for="isHidden_' + i + '"><input name="isHidden" type="checkbox" ' + (logConfig[i].isHidden ? 'checked' : '') + ' /> hide</label></div>'));
                     }
                 }).fail(function() {
                     localStorage.setItem('logConfig_' + logManager.applicationName, undefined);
                 }).always(function() {
-                    logManager.initDatatable();
+                    logManager.initLogsGrid();
                 });
             });
         },
-        loadDatatableFilters: function () {
-            var logConfig = JSON.parse(localStorage.getItem('logConfig_' + logManager.applicationName)),
-            $filtersContainer = $('#filtersContainer');
-
-            var htmlFilters = [];
-
-            var templateStart = function (prop) { return '<div class="col-sm-4 col-md-2"><label for="' + prop + '">' + prop.toUpperCase() + '</label>'; },
-                templateSelect = function (prop) { return '<select class="form-control filter" id="' + prop + '">' + logManager.getOptionsForColumn(prop) + '</select>'; },
-                templateInputText = function (prop) { return '<input type="text" class="form-control filter" id="' + prop + '" />'; },
-                templateEnd = '</div>';
-
-            for (var i in logConfig) {
-                if (logConfig[i].isHidden == true || logConfig[i].filterType == 0) {
-                    continue;
-                }
-
-                if (logConfig[i].filterType == 1) {
-                    htmlFilters.push(templateStart(logConfig[i].name) + templateInputText(logConfig[i].name) + templateEnd);
-                } else if (logConfig[i].filterType == 2) {
-                    htmlFilters.push(templateStart(logConfig[i].name) + templateSelect(logConfig[i].name) + templateEnd);
-                }
-            }
-
-            $filtersContainer.html(htmlFilters.join(''));
-        },
-        initDatatable: function () {
+        initLogsGrid: function () {
             $('#dtContainer > .overlay').show();
             $('#dtContainer > table').html('');
             $('#dtContainer > span').remove();
@@ -131,41 +85,52 @@
                     for (var prop in datas[0]) {
                         var config = logManager.getColumnConfigurationByName(prop);
                         var colDef = {
-                            "title": prop.toUpperCase(),
-                            "data": prop,
-                            "visible": config !== null ? !config.isHidden : true,
+                            "headerName": prop.toUpperCase(),
+                            "field": prop,
+                            "hide": config !== null ? config.isHidden : false,
                             "searchable": config !== null ? !config.isHidden : true,
                             "className": prop
                         };
                         if ((prop === 'createdAt' || prop.indexOf('date') >= 0) && !config.isHidden) {
-                            if (createdAtIndex === -1) {
-                                createdAtIndex = nbCol;
-                            }
-                            colDef.render = function (data, type, row, meta) {
+                            colDef.sort = 'desc';
+                            colDef.cellRenderer = function (params) {
+                                var data = params.valueFormatted ? params.valueFormatted : params.value;
                                 return moment(data).format('YYYY/MM/DD, HH:mm:ss');
                             };
                         }
                         nbCol++;
                         columnsDefinitions.push(colDef);
                     }
-                    while (createdAtIndex <= columnsDefinitions.length && columnsDefinitions[createdAtIndex].visible === false) {
-                        createdAtIndex++;
-                    }
 
-                    if ($.fn.dataTable.isDataTable('#dtContainer table:eq(0)')) {
-                        $('#dtContainer table:eq(0)').DataTable().destroy();
-                    }
+                    $('#logsGrid').empty();
+                    var gridOptions = {
 
-                    $('#dtContainer table:eq(0)').dataTable({
-                        "order": createdAtIndex > columnsDefinitions.length ?  [] : [[createdAtIndex, "desc"]],
-                        "columns": columnsDefinitions,
-                        "data": datas
-                    });
+                        // PROPERTIES - object properties, myRowData and myColDefs are created somewhere in your application
+                        rowData: datas,
+                        columnDefs: columnsDefinitions,
+
+                        // PROPERTIES - simple boolean / string / number properties
+                        enableColResize: true,
+                        enableSorting: true,
+                        enableFilter:true,
+                        groupHeaders: false,
+                        headerHeight: 30,
+                        rowHeight: 30,
+                        rowSelection: 'multiple',
+                        editable: false,
+
+                        // CALLBACKS
+                        isScrollLag: function () { return false; },
+                        getRowClass: function (params) { return params.data.level != undefined ? params.data.level : ''; }
+                    };
+
+                    new agGrid.Grid(document.querySelector('#logsGrid'), gridOptions);
+                    gridOptions.api.sizeColumnsToFit();
+
                 } else {
                     $('#dtContainer').append('<span><strong> No logs received... </strong></span>');
                 }
                 $('#dtContainer > .overlay').hide();
-                logManager.loadDatatableFilters();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 $('#dtContainer > .overlay').hide();
                 swal({
@@ -204,7 +169,7 @@
                     showConfirmButton: true
                 });
                 $('#dtContainer > .overlay').show();
-                logManager.initDatatable();
+                logManager.initLogsGrid();
             });
         },
         saveConfiguration: function (e) {
@@ -220,7 +185,7 @@
                 dataType: 'json',
                 data: configuration
             }).done(function (data) {
-                logManager.initDatatable();
+                logManager.initLogsGrid();
                 $('#configurationModal').modal('hide');
             });
         }
@@ -233,12 +198,5 @@
         $(document).on('nlea.keyloaded', logManager.initConfiguration);
         $(document).on('click', '#getKeyBtn', logManager.getApiKey);
         $(document).on('click', '#deleteLogsBtn', logManager.deleteLogs);
-
-        $(document).on('change', '.filter', function (e) {
-            var filter = $(this).val(),
-                column = $(this).attr('id');
-
-            $('#dtContainer table:eq(0)').DataTable().column('.' + column).eq(0).search(filter).draw();
-        });
     });
 })();

@@ -98,7 +98,7 @@
                 $.ajax({
                     url: window.appConfig.getUrl('/admin/register/' + $('#appNameField').val(), 'PUT'),
                     method: 'POST',
-                    dataType: 'jsonp'
+                    dataType: 'json'
                 }).done(function (data) {
                     swal({
                         title: "Success !",
