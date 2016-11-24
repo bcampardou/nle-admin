@@ -7,3 +7,7 @@ master | [![Build status](https://ci.appveyor.com/api/projects/status/x066dsmixv
 Administration application for node-log-engine project built with ASP.NET Core and MVC 6.
 
 You can take a look at the NLE project here : https://github.com/BaobabCoder/node-log-engine
+
+## Screenshot
+
+[![nleadmin.jpg](https://s12.postimg.org/txd9pyzjx/nleadmin.jpg)](https://postimg.org/image/b51eme35l/)
